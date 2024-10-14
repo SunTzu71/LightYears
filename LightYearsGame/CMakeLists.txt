@@ -1,44 +1,22 @@
-add_executable(${LIGHT_YEARS_TARGET_NAME} src/main.cpp
-        src/framework/Application.cpp)
-
-target_include_directories(${LIGHT_YEARS_TARGET_NAME} PUBLIC
-       ${CMAKE_CURRENT_SOURCE_DIR}/include
+add_executable(${LIGHT_YEARS_GAME_TARGET_NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR} include/GameFramework/GameApplication.h
+        ${CMAKE_CURRENT_SOURCE_DIR} src/GameFramework/GameApplication.cpp
 )
 
-target_link_libraries(${LIGHT_YEARS_TARGET_NAME} PUBLIC sfml-graphics)
-target_link_libraries(${LIGHT_YEARS_TARGET_NAME} PUBLIC sfml-window)
-target_link_libraries(${LIGHT_YEARS_TARGET_NAME} PUBLIC sfml-system)
-target_link_libraries(${LIGHT_YEARS_TARGET_NAME} PUBLIC sfml-audio)
+target_include_directories(${LIGHT_YEARS_GAME_TARGET_NAME} PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-add_custom_command(
-        TARGET ${LIGHT_YEARS_TARGET_NAME}
-        POST_BUILD
-        COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:sfml-graphics>
-        $<TARGET_FILE_DIR:${LIGHT_YEARS_TARGET_NAME}>
-)
-add_custom_command(
-        TARGET ${LIGHT_YEARS_TARGET_NAME}
-        POST_BUILD
-        COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:sfml-window>
-        $<TARGET_FILE_DIR:${LIGHT_YEARS_TARGET_NAME}>
-)
-add_custom_command(
-        TARGET ${LIGHT_YEARS_TARGET_NAME}
-        POST_BUILD
-        COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:sfml-system>
-        $<TARGET_FILE_DIR:${LIGHT_YEARS_TARGET_NAME}>
-)
-add_custom_command(
-        TARGET ${LIGHT_YEARS_TARGET_NAME}
-        POST_BUILD
-        COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:sfml-audio>
-        $<TARGET_FILE_DIR:${LIGHT_YEARS_TARGET_NAME}>
-)
+target_link_libraries(${LIGHT_YEARS_GAME_TARGET_NAME} PUBLIC ${LIGHT_YEARS_ENGINE_TARGET_NAME})
+
+function(CopyLibDirToTarget LIB_NAME TARGET_NAME)
+    add_custom_command(TARGET ${TARGET_NAME}
+            POST_BUILD
+            COMMAND
+            ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:${LIB_NAME}>
+            $<TARGET_FILE_DIR:${TARGET_NAME}>
+    )
+endfunction()
+
+CopyLibDirToTarget(${LIGHT_YEARS_ENGINE_TARGET_NAME} ${LIGHT_YEARS_GAME_TARGET_NAME})
