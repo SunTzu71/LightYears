@@ -7,7 +7,18 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(FetchContent)
+set(SFML_LIB_NAME SFML)
+
+FetchContent_Declare(
+        ${SFML_LIB_NAME}
+        GIT_REPOSITORY https://github.com/SFML/SFML
+        GIT_TAG 2.6.1
+        GIT_SHALLOW FALSE
+)
+
+FetchContent_MakeAvailable(${SFML_LIB_NAME})
+
 # create light years variable
 set(LIGHT_YEARS_TARGET_NAME LightYears)
-
 add_subdirectory(LightYearsGame)
