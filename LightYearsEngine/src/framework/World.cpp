@@ -30,12 +30,18 @@ namespace ly {
             if (iterator->get()->IsPendingDestroy()) {
                 iterator = mActors.erase(iterator);
             } else {
-                iterator->get()->Tick(deltaTime);
+                iterator->get()->TickInternal(deltaTime);
                 ++iterator;
             }
         }
 
         Tick(deltaTime);
+    }
+
+    void World::Render(sf::RenderWindow &window) {
+        for (auto& actor : mActors) {
+            actor->Render(window);
+        }
     }
 
     World::~World() {
