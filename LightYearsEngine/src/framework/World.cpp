@@ -24,10 +24,15 @@ namespace ly {
             mActors.push_back(actor);
             actor->BeginPlayInternal();
         }
-        mActors.clear();
+        mPendingActors.clear();
 
-        for (shared<Actor> actor : mActors) {
-            actor->Tick(deltaTime);
+        for (auto iterator = mActors.begin(); iterator != mActors.end(); ) {
+            if (iterator->get()->IsPendingDestroy()) {
+                iterator = mActors.erase(iterator);
+            } else {
+                iterator->get()->Tick(deltaTime);
+                ++iterator;
+            }
         }
 
         Tick(deltaTime);
