@@ -48,10 +48,10 @@ namespace ly {
     }
 
     void World::BeginPlay() {
-        LOG("began play");
+        //LOG("began play");
     }
 
     void World::Tick(float deltaTime) {
-        LOG("Tick frame rate %f", 1.f / deltaTime);
+        //LOG("Tick frame rate %f", 1.f / deltaTime);
     }
 }
