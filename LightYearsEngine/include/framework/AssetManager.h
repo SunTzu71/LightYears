@@ -1,8 +1,19 @@
-//
-// Created by Christopher Hall on 10/15/24.
-//
+#pragma once
+#include <SFML/Graphics.hpp>
+#include "framework/Core.h"
 
-#ifndef ASSETMANAGER_H
-#define ASSETMANAGER_H
+namespace ly {
+    class AssetManager {
+    public:
+        static AssetManager& Get();
+        shared<sf::Texture> LoadTexture(const std::string& path);
 
-#endif //ASSETMANAGER_H
+    protected:
+        AssetManager();
+
+    private:
+        // singleton for asset manager class
+        static unique<AssetManager> assetManager;
+        Dictionary<std::string, shared<sf::Texture>> mLoadedTextureMap;
+    };
+}
